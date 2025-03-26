@@ -42,6 +42,7 @@ async function run() {
             res.send(result);
         })
 
+        // Review related APIs
         app.post('/add-reviews', async (req, res) => {
             const review = req.body;
             const result = await reviewCollection.insertOne(review);
@@ -60,6 +61,14 @@ async function run() {
             res.send(result);
         })
 
+        app.delete('/delete-review/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const result = await myReviewCollection.deleteOne(query);
+            res.send(result);
+        })
+
+
         app.get('/reviews', async (req, res) => {
             const cursor = reviewCollection.find();
             const result = await cursor.toArray();
@@ -73,6 +82,7 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         })
+
 
 
         // User Collection
