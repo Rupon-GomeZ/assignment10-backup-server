@@ -68,6 +68,24 @@ async function run() {
             res.send(result);
         })
 
+        app.patch('/update-review/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const updatedReview = req.body;
+            const updateDoc = {
+                $set: updatedReview,
+            };
+            const result = await myReviewCollection.updateOne(query, updateDoc);
+            res.send(result);
+        })
+
+        app.get('/update-review/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const cursor = myReviewCollection.find(query);
+            const result = await cursor.toArray();
+            res.send(result);
+        })
 
         app.get('/reviews', async (req, res) => {
             const cursor = reviewCollection.find();
@@ -81,6 +99,12 @@ async function run() {
             const cursor = reviewCollection.find(query);
             const result = await cursor.toArray();
             res.send(result);
+        })
+
+        app.get('/review/sorted', async (req, res) => {
+            const cursor = myReviewCollection.find().sort({ rating: - 1 }).limit(6)
+            const result = await cursor.toArray()
+            res.send(result)
         })
 
 
