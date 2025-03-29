@@ -33,6 +33,7 @@ async function run() {
         const gameCollection = database.collection("games");
         const reviewCollection = database.collection("reviews");
         const myReviewCollection = database.collection("myReviews");
+        const watchListCollection = database.collection("watchList")
 
         const userCollection = database.collection("users");
 
@@ -107,6 +108,24 @@ async function run() {
             res.send(result)
         })
 
+        app.post('/addToWatchList', async (req, res) => {
+            const { email, reviewId, reviewData } = req.body;
+            const query = { email, reviewId };
+            const existing = await watchListCollection.findOne(query);
+
+            if (existing) {
+                return res.send("Already Exists")
+            }
+
+            const result = await watchListCollection.insertOne({ email, reviewId, reviewData });
+            res.send(result)
+        })
+
+        app.get('/WatchList', async (req, res) => {
+            const cursor = watchListCollection.find()
+            const result = await cursor.toArray()
+            res.send(result)
+        })
 
 
         // User Collection
