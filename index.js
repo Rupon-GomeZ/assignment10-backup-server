@@ -103,7 +103,19 @@ async function run() {
         })
 
         app.get('/review/sorted', async (req, res) => {
-            const cursor = myReviewCollection.find().sort({ rating: - 1 }).limit(6)
+            const cursor = reviewCollection.find().sort({ rating: - 1 }).limit(6)
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
+        app.get('/review/sortbyYear', async (req, res) => {
+            const cursor = reviewCollection.find().sort({ publishingYear: -1 })
+            const result = await cursor.toArray()
+            res.send(result)
+        })
+
+        app.get('/review/sortbyRating', async (req, res) => {
+            const cursor = reviewCollection.find().sort({ rating: -1 })
             const result = await cursor.toArray()
             res.send(result)
         })
@@ -121,7 +133,14 @@ async function run() {
             res.send(result)
         })
 
-        app.get('/WatchList', async (req, res) => {
+        app.delete('/watchList/:id', async (req, res) => {
+            const id = req.params.id
+            const query = { _id: new ObjectId(id) }
+            const result = await watchListCollection.deleteOne(query)
+            res.send(result);
+        })
+
+        app.get('/watchList', async (req, res) => {
             const cursor = watchListCollection.find()
             const result = await cursor.toArray()
             res.send(result)
