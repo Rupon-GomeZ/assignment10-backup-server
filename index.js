@@ -120,6 +120,14 @@ async function run() {
             res.send(result)
         })
 
+        app.get('/review/:genre', async (req, res) => {
+            const genre = req.params.genre;
+            const query = { genre: genre };
+            const cursor = reviewCollection.find(query)
+            const result = await cursor.toArray();
+            res.send(result)
+        })
+
         app.post('/addToWatchList', async (req, res) => {
             const { email, reviewId, reviewData } = req.body;
             const query = { email, reviewId };
