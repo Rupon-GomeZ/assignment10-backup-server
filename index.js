@@ -105,7 +105,7 @@ async function run() {
         app.get('/review/sorted', async (req, res) => {
             const cursor = reviewCollection.find().sort({ rating: - 1 }).limit(6)
             const result = await cursor.toArray()
-            res.send(result)
+            res.send(result);
         })
 
         app.get('/review/sortbyYear', async (req, res) => {
@@ -117,7 +117,7 @@ async function run() {
         app.get('/review/sortbyRating', async (req, res) => {
             const cursor = reviewCollection.find().sort({ rating: -1 })
             const result = await cursor.toArray()
-            res.send(result)
+            res.send(result);
         })
 
         app.get('/review/:genre', async (req, res) => {
